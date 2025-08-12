@@ -1,0 +1,18 @@
+Theme Screenshot Placeholder
+
+This file serves as a placeholder for the theme screenshot.
+The actual screenshot should be a PNG file named 'screenshot.png' 
+with dimensions of 1200x900 pixels showing the theme's homepage design.
+
+The screenshot should showcase:
+- Hero section with red gradient background
+- Clean navigation header
+- Service cards with icons
+- Statistics section
+- Overall charity/healthcare organization aesthetic
+
+To create the actual screenshot:
+1. Activate this theme in WordPress
+2. Set up a homepage with sample content
+3. Take a screenshot at 1200x900 resolution
+4. Save as screenshot.png in the theme directory
