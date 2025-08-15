@@ -70,6 +70,12 @@
         });
     });
 
+    wp.customize('background_color', function(value) {
+        value.bind(function(newval) {
+            updateCSSProperty('--background-color', '#' + newval);
+        });
+    });
+
     // Typography Controls
     wp.customize('heading_font', function(value) {
         value.bind(function(newval) {

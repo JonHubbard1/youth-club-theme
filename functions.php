@@ -142,7 +142,7 @@ function youth_club_theme_widgets_init() {
 add_action('widgets_init', 'youth_club_theme_widgets_init');
 
 /**
- * Calculate contrasting colors based on background color
+ * Calculate contrasting colours based on background colour
  */
 function youth_club_theme_calculate_contrast_colors($bg_color) {
     // Remove # if present
@@ -163,7 +163,7 @@ function youth_club_theme_calculate_contrast_colors($bg_color) {
         'text' => $is_light ? '#333333' : '#ecf0f1',
         'heading' => $is_light ? '#2c3e50' : '#ffffff',
         'link' => $is_light ? '#666666' : '#bdc3c7',
-        'link_hover' => '#e74c3c', // Always use primary color for hover
+        'link_hover' => '#e74c3c', // Always use primary colour for hover
         'border' => $is_light ? '#e0e0e0' : '#34495e'
     );
 }
@@ -229,6 +229,9 @@ function youth_club_theme_services_fallback_menu() {
  */
 function youth_club_theme_customize_register($wp_customize) {
     
+    // Remove default WordPress Colors section to avoid duplication
+    $wp_customize->remove_section('colors');
+    
     // Enhanced Logo Settings
     $wp_customize->add_section('logo_settings', array(
         'title'    => __('Logo & Branding', 'youth-club-theme'),
@@ -267,9 +270,9 @@ function youth_club_theme_customize_register($wp_customize) {
         ),
     ));
 
-    // Color Scheme Section
+    // Colour Scheme Section
     $wp_customize->add_section('color_scheme', array(
-        'title'    => __('Color Scheme', 'youth-club-theme'),
+        'title'    => __('Colour Scheme', 'youth-club-theme'),
         'priority' => 26,
     ));
 
@@ -280,7 +283,7 @@ function youth_club_theme_customize_register($wp_customize) {
     ));
 
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'primary_color', array(
-        'label'    => __('Primary Color', 'youth-club-theme'),
+        'label'    => __('Primary Colour', 'youth-club-theme'),
         'section'  => 'color_scheme',
         'settings' => 'primary_color',
     )));
@@ -291,7 +294,7 @@ function youth_club_theme_customize_register($wp_customize) {
     ));
 
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'secondary_color', array(
-        'label'    => __('Secondary Color', 'youth-club-theme'),
+        'label'    => __('Secondary Colour', 'youth-club-theme'),
         'section'  => 'color_scheme',
         'settings' => 'secondary_color',
     )));
@@ -302,19 +305,19 @@ function youth_club_theme_customize_register($wp_customize) {
     ));
 
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'accent_color', array(
-        'label'    => __('Accent Color', 'youth-club-theme'),
+        'label'    => __('Accent Colour', 'youth-club-theme'),
         'section'  => 'color_scheme',
         'settings' => 'accent_color',
     )));
 
-    // Text colors
+    // Text colours
     $wp_customize->add_setting('heading_color', array(
         'default'           => '#2c3e50',
         'sanitize_callback' => 'sanitize_hex_color',
     ));
 
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'heading_color', array(
-        'label'    => __('Heading Color', 'youth-club-theme'),
+        'label'    => __('Heading Colour', 'youth-club-theme'),
         'section'  => 'color_scheme',
         'settings' => 'heading_color',
     )));
@@ -325,7 +328,7 @@ function youth_club_theme_customize_register($wp_customize) {
     ));
 
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'body_text_color', array(
-        'label'    => __('Body Text Color', 'youth-club-theme'),
+        'label'    => __('Body Text Colour', 'youth-club-theme'),
         'section'  => 'color_scheme',
         'settings' => 'body_text_color',
     )));
@@ -336,19 +339,19 @@ function youth_club_theme_customize_register($wp_customize) {
     ));
 
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'link_color', array(
-        'label'    => __('Link Color', 'youth-club-theme'),
+        'label'    => __('Link Colour', 'youth-club-theme'),
         'section'  => 'color_scheme',
         'settings' => 'link_color',
     )));
 
-    // Background colors
+    // Background colours
     $wp_customize->add_setting('header_bg_color', array(
         'default'           => '#ffffff',
         'sanitize_callback' => 'sanitize_hex_color',
     ));
 
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'header_bg_color', array(
-        'label'    => __('Header Background', 'youth-club-theme'),
+        'label'    => __('Header Background Colour', 'youth-club-theme'),
         'section'  => 'color_scheme',
         'settings' => 'header_bg_color',
     )));
@@ -359,9 +362,21 @@ function youth_club_theme_customize_register($wp_customize) {
     ));
 
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'footer_bg_color', array(
-        'label'    => __('Footer Background', 'youth-club-theme'),
+        'label'    => __('Footer Background Colour', 'youth-club-theme'),
         'section'  => 'color_scheme',
         'settings' => 'footer_bg_color',
+    )));
+
+    // Page Background Colour (replaces WordPress default)
+    $wp_customize->add_setting('background_color', array(
+        'default'           => 'ffffff',
+        'sanitize_callback' => 'sanitize_hex_color_no_hash',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'background_color', array(
+        'label'    => __('Page Background Colour', 'youth-club-theme'),
+        'section'  => 'color_scheme',
+        'settings' => 'background_color',
     )));
 
     // Typography Section
@@ -1069,14 +1084,14 @@ function youth_club_theme_customize_register($wp_customize) {
         'type'     => 'text',
     ));
 
-    // Background color
+    // Background colour
     $wp_customize->add_setting('funding_partners_bg_color', array(
         'default'           => '#f8f9fa',
         'sanitize_callback' => 'sanitize_hex_color',
     ));
 
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'funding_partners_bg_color', array(
-        'label'    => __('Background Color', 'youth-club-theme'),
+        'label'    => __('Background Colour', 'youth-club-theme'),
         'section'  => 'funding_partners_section',
         'settings' => 'funding_partners_bg_color',
     )));
@@ -1248,7 +1263,7 @@ function youth_club_theme_custom_css() {
     ?>
     <style type="text/css" id="youth-club-theme-custom-css">
     :root {
-        /* Colors */
+        /* Colours */
         --primary-color: <?php echo esc_attr(get_theme_mod('primary_color', '#e74c3c')); ?>;
         --secondary-color: <?php echo esc_attr(get_theme_mod('secondary_color', '#2c3e50')); ?>;
         --accent-color: <?php echo esc_attr(get_theme_mod('accent_color', '#3498db')); ?>;
@@ -1257,9 +1272,10 @@ function youth_club_theme_custom_css() {
         --link-color: <?php echo esc_attr(get_theme_mod('link_color', '#3498db')); ?>;
         --header-bg-color: <?php echo esc_attr(get_theme_mod('header_bg_color', '#ffffff')); ?>;
         --footer-bg-color: <?php echo esc_attr(get_theme_mod('footer_bg_color', '#2c3e50')); ?>;
+        --background-color: #<?php echo esc_attr(get_theme_mod('background_color', 'ffffff')); ?>;
         
         <?php 
-        // Calculate footer contrast colors
+        // Calculate footer contrast colours
         $footer_bg = get_theme_mod('footer_bg_color', '#2c3e50');
         $footer_contrast = youth_club_theme_calculate_contrast_colors($footer_bg);
         ?>
@@ -1281,12 +1297,13 @@ function youth_club_theme_custom_css() {
         --logo-margin-bottom: <?php echo esc_attr(get_theme_mod('logo_margin_bottom', '20')); ?>px;
     }
 
-    /* Apply color scheme */
+    /* Apply colour scheme */
     body {
         font-family: var(--body-font);
         font-size: var(--body-font-size);
         line-height: var(--line-height);
         color: var(--body-text-color);
+        background-color: var(--background-color);
     }
 
     h1, h2, h3, h4, h5, h6 {
@@ -1321,7 +1338,7 @@ function youth_club_theme_custom_css() {
         margin-bottom: var(--logo-margin-bottom);
     }
 
-    /* Button styling with primary color */
+    /* Button styling with primary colour */
     .btn-primary,
     .hero-cta .btn-primary,
     .wp-block-button__link,
