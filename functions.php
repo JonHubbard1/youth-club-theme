@@ -1495,3 +1495,341 @@ function youth_club_theme_customize_preview_js() {
     );
 }
 add_action('customize_preview_init', 'youth_club_theme_customize_preview_js');
+
+/**
+ * Customise WordPress login page to match youth club theme
+ */
+function youth_club_theme_login_stylesheet() {
+    wp_enqueue_style('youth-club-theme-login', get_template_directory_uri() . '/login-style.css', array(), wp_get_theme()->get('Version'));
+}
+add_action('login_enqueue_scripts', 'youth_club_theme_login_stylesheet');
+
+/**
+ * Customise login page logo link and title
+ */
+function youth_club_theme_login_logo_url() {
+    return home_url();
+}
+add_filter('login_headerurl', 'youth_club_theme_login_logo_url');
+
+function youth_club_theme_login_logo_url_title() {
+    return get_bloginfo('name') . ' - ' . get_bloginfo('description');
+}
+add_filter('login_headertext', 'youth_club_theme_login_logo_url_title');
+
+/**
+ * Add custom login page styles inline to ensure they load
+ */
+function youth_club_theme_login_head() {
+    $primary_color = get_theme_mod('primary_color', '#e74c3c');
+    $secondary_color = get_theme_mod('secondary_color', '#2c3e50');
+    $accent_color = get_theme_mod('accent_color', '#3498db');
+    $body_font = get_theme_mod('body_font', 'Inter, sans-serif');
+    $heading_font = get_theme_mod('heading_font', 'Inter, sans-serif');
+    ?>
+    <style type="text/css">
+        /* Import Inter font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        /* Reset and base styles */
+        body.login {
+            background: linear-gradient(135deg, <?php echo esc_attr($primary_color); ?>, <?php echo esc_attr($secondary_color); ?>);
+            font-family: <?php echo esc_attr($body_font); ?>;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Add subtle background pattern */
+        body.login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        /* Login form container */
+        #login {
+            width: 400px;
+            padding: 0 20px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Logo area */
+        #login h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        #login h1 a {
+            background-image: none !important;
+            width: auto !important;
+            height: auto !important;
+            text-decoration: none;
+            font-family: <?php echo esc_attr($heading_font); ?>;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            display: inline-block;
+            padding: 20px 0;
+        }
+        
+        /* If custom logo is set, show it instead */
+        <?php if (has_custom_logo()): ?>
+        #login h1 a {
+            background-image: url('<?php echo esc_url(wp_get_attachment_image_url(get_theme_mod('custom_logo'), 'full')); ?>') !important;
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            width: 250px !important;
+            height: 80px !important;
+            text-indent: -9999px;
+            overflow: hidden;
+        }
+        <?php endif; ?>
+        
+        /* Main login form */
+        #loginform {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            padding: 40px;
+            margin-bottom: 20px;
+        }
+        
+        /* Form labels */
+        #loginform label {
+            color: <?php echo esc_attr($secondary_color); ?>;
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        /* Form inputs */
+        #loginform input[type="text"],
+        #loginform input[type="password"] {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            box-shadow: none;
+            color: <?php echo esc_attr($secondary_color); ?>;
+            font-size: 16px;
+            padding: 15px;
+            width: 100%;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            font-family: <?php echo esc_attr($body_font); ?>;
+        }
+        
+        #loginform input[type="text"]:focus,
+        #loginform input[type="password"]:focus {
+            border-color: <?php echo esc_attr($primary_color); ?>;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(<?php 
+                list($r, $g, $b) = sscanf($primary_color, "#%02x%02x%02x");
+                echo "$r, $g, $b";
+            ?>, 0.1);
+        }
+        
+        /* Submit button */
+        #loginform .button-primary {
+            background: <?php echo esc_attr($primary_color); ?>;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 15px 30px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: <?php echo esc_attr($body_font); ?>;
+            text-shadow: none;
+            box-shadow: 0 4px 12px rgba(<?php 
+                list($r, $g, $b) = sscanf($primary_color, "#%02x%02x%02x");
+                echo "$r, $g, $b";
+            ?>, 0.3);
+        }
+        
+        #loginform .button-primary:hover {
+            background: <?php echo esc_attr($secondary_color); ?>;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(<?php 
+                list($r, $g, $b) = sscanf($secondary_color, "#%02x%02x%02x");
+                echo "$r, $g, $b";
+            ?>, 0.4);
+        }
+        
+        #loginform .button-primary:active {
+            transform: translateY(0);
+        }
+        
+        /* Remember me checkbox */
+        #loginform .forgetmenot {
+            margin-bottom: 20px;
+        }
+        
+        #loginform .forgetmenot label {
+            font-size: 14px;
+            color: #666;
+            display: inline;
+            margin-left: 8px;
+        }
+        
+        #loginform input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: <?php echo esc_attr($primary_color); ?>;
+        }
+        
+        /* Lost password and back to blog links */
+        #nav,
+        #backtoblog {
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        #nav a,
+        #backtoblog a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        #nav a:hover,
+        #backtoblog a:hover {
+            color: rgba(255,255,255,0.8);
+            text-decoration: underline;
+        }
+        
+        /* Error messages */
+        #login_error,
+        .login .message {
+            background: rgba(220, 53, 69, 0.95);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        /* Success messages */
+        .login .message {
+            background: rgba(25, 135, 84, 0.95);
+        }
+        
+        /* Privacy policy link */
+        .privacy-policy-page-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .privacy-policy-page-link a {
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        
+        .privacy-policy-page-link a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+        
+        /* Responsive design */
+        @media screen and (max-width: 480px) {
+            #login {
+                width: 100%;
+                padding: 0 15px;
+            }
+            
+            #loginform {
+                padding: 30px 20px;
+            }
+            
+            #login h1 a {
+                font-size: 1.5rem;
+            }
+            
+            <?php if (has_custom_logo()): ?>
+            #login h1 a {
+                width: 200px !important;
+                height: 60px !important;
+            }
+            <?php endif; ?>
+        }
+        
+        /* Loading state */
+        .loading #loginform .button-primary {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        /* Focus styles for accessibility */
+        #loginform a:focus,
+        #nav a:focus,
+        #backtoblog a:focus {
+            outline: 2px solid white;
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+        
+        /* Improve contrast for better accessibility */
+        ::placeholder {
+            color: #999;
+            opacity: 1;
+        }
+        
+        /* Animation for form appearance */
+        #loginform {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Additional styling for interim-login */
+        .interim-login #loginform {
+            margin-top: 50px;
+        }
+        
+        /* Language switcher styling if present */
+        .language-switcher {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .language-switcher select {
+            background: rgba(255,255,255,0.9);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 6px;
+            color: <?php echo esc_attr($secondary_color); ?>;
+            padding: 8px 12px;
+            font-family: <?php echo esc_attr($body_font); ?>;
+        }
+    </style>
+    <?php
+}
+add_action('login_head', 'youth_club_theme_login_head');
