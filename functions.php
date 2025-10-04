@@ -89,8 +89,8 @@ function youth_club_theme_setup() {
             'color' => '#f39c12',
         ),
         array(
-            'name'  => esc_html__('Light Gray', 'youth-club-theme'),
-            'slug'  => 'light-gray',
+            'name'  => esc_html__('Light Grey', 'youth-club-theme'),
+            'slug'  => 'light-grey',
             'color' => '#f8f9fa',
         ),
     ));
